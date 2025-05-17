@@ -1,0 +1,54 @@
+[tool.poetry]
+name = "aether"
+version = "0.1.0"
+description = "AI-Powered Cloud Cost Optimization Platform"
+authors = ["Purushothaman <praksh.purushot@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.13"
+fastapi = "0.115.12"
+uvicorn = { extras = ["standard"], version = "0.34.2" }
+scikit-learn = "1.4.0"
+prometheus-api-client = "0.6.0"
+pandas = "2.2.1"
+numpy = "1.26.4"
+pyyaml = "6.0.1"
+durable-rules = "2.0.6"
+
+[tool.poetry.dev-dependencies]
+pytest = "8.2.0"
+black = "25.1.0"
+mypy = "1.10.0"
+isort = "6.0.1"
+ruff = "^0.3.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+# Enable Pyflakes (`F`), isort (`I`), pycodestyle (`E`), and many more
+select = ["E", "F", "I", "UP", "N", "B", "C4"]
+line-length = 120
+target-version = "py313"
+# Sort imports
+fix-only = false
+unfixable = []
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "auto"
+end-of-line-newline = true
+
+[tool.ruff.isort]
+known-first-party = ["aether"]
+known-third-party = ["fastapi", "uvicorn", "pandas", "numpy", "pyyaml", "durable_rules"]
+force-grid-wrap = 0
+force-single-line = false
+include-trailing-comma = true
+use-parentheses = true
+combine-as-imports = true
+skip = ["__init__.py"]
+multi-line-output = 3
+
