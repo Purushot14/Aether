@@ -25,7 +25,6 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          cd aether
           poetry install
 
       - name: Run Tests
