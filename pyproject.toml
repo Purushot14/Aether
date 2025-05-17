@@ -15,6 +15,10 @@ pandas = "2.2.3"
 numpy = "2.2.5"
 pyyaml = "6.0.2"
 streamlit = "1.45.1"
+boto3 = "^1.34.0"
+google-cloud-monitoring = "^2.17.0"
+azure-identity = "^1.15.0"
+azure-mgmt-monitor = "^5.0.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "8.2.0"
