@@ -6,151 +6,49 @@ Created: 17/05/25.
 
 __author__ = "prakash"
 __date__ = "17/05/25"
+import os
+# 2. Create .github/workflows/ci.yml
+os.makedirs(".github/workflows", exist_ok=True)
 
+ci_workflow = """
+name: CI
 
-updated_readme = """
-# 🌩️ Aether – AI-Powered Cloud Cost Optimization Platform
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
-Aether is a cloud-native, AI-augmented platform designed to help platform teams identify and reduce overprovisioned infrastructure costs across Kubernetes and multi-cloud workloads.
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
 
----
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
 
-## 🚀 Features
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
 
-- 🤖 **AI-based Resource Right-Sizing** – Predicts optimal CPU/Memory for K8s workloads using Isolation Forest
-- 📏 **Rule-based Recommendations** – Plain Python logic to suggest actions based on historical usage
-- 📊 **Interactive Dashboard** – Streamlit UI to visualize savings opportunities per tenant
-- 🔧 **Terraform IaC Modules** – EKS + Prometheus observability infrastructure
-- 🔐 **Multi-Tenant & GitOps Friendly** – Secure, modular, and CI/CD ready
+      - name: Install Poetry
+        run: |
+          pip install poetry
 
----
+      - name: Install Dependencies
+        run: |
+          cd aether
+          poetry install
 
-## 🧱 Project Structure
-
-```
-aether/
-├── api/                   # FastAPI service (stubbed)
-├── ai_engine/             # AI/ML logic (Isolation Forest model)
-│   └── right_sizer.py
-├── rules/                 # Pure Python rule engine
-│   └── rule_engine.py
-├── data_pipeline/         # (To be implemented: metric ingestion)
-├── dashboard/             # Streamlit dashboard
-│   └── app.py
-├── infra/
-│   └── terraform/         # IaC setup for EKS + Prometheus
-│       ├── modules/
-│       │   ├── eks/
-│       │   └── prometheus/
-│       └── environments/
-│           └── dev/terraform.tfvars
-├── pyproject.toml         # Poetry dependencies
-├── docker-compose.yml     # Local dev setup
-└── README.md              # You're here!
-```
-
----
-
-## 🧪 How to Run Everything
-
-### 1. 🔧 Install Dependencies (Poetry)
-
-```bash
-poetry install
-```
-
----
-
-### 2. 🤖 Run the AI Right-Sizing Engine
-
-```bash
-poetry run python ai_engine/right_sizer.py
-```
-
-> Outputs recommended CPU/memory for pods with confidence score based on usage data.
-
----
-
-### 3. 📏 Run the Rule Engine
-
-```bash
-poetry run python rules/rule_engine.py
-```
-
-> Evaluates sample workloads and prints rule-based recommendations like:
-```
-[RECOMMENDATION] analytics-pod: scale_down_cpu — CPU usage below 40% for 7+ days
-```
-
----
-
-### 4. 📊 Launch the Streamlit Dashboard
-
-```bash
-poetry run streamlit run dashboard/app.py
-```
-
-> View recommendations in a tabular format with tenant-wise filtering.
-
----
-
-### 5. 🛠️ Provision Infrastructure with Terraform
-
-#### Setup
-
-Update your `terraform.tfvars` with valid `vpc_id` and `subnet_ids` in:
-
-```hcl
-aether/infra/terraform/environments/dev/terraform.tfvars
-```
-
-#### Run
-
-```bash
-cd aether/infra/terraform/modules/eks
-terraform init
-terraform apply -var-file=../../environments/dev/terraform.tfvars
-
-cd ../prometheus
-terraform init
-terraform apply
-```
-
----
-
-## 🧠 Model Details
-
-- **Model:** Isolation Forest
-- **Use:** Detects underutilized workloads for downscaling
-- **Extension:** Forecasting (Prophet, LSTM) planned in future versions
-
----
-
-## 🔐 Security Principles
-
-- Least-privilege IAM for AWS modules
-- GitOps workflow compatible (ArgoCD/Flux ready)
-- Future: Auth-enabled dashboards + multi-tenant K8s namespaces
-
----
-
-## 📥 Contributing
-
-We welcome:
-- New ML-based optimization techniques
-- Alerting & notification plugins
-- GitHub PR-based automation logic
-
----
-
-## 📄 License
-
-MIT License — feel free to build on top of it.
+      - name: Run Tests
+        run: |
+          cd aether
+          poetry run pytest tests
 """
 
-with open("README.md", "w") as f:
-    f.write(updated_readme.strip())
-
+with open(".github/workflows/ci.yml", "w") as f:
+    f.write(ci_workflow.strip())
 
 if __name__ == "__main__":
     import os
