@@ -29,5 +29,4 @@ jobs:
 
       - name: Run Tests
         run: |
-          cd aether
           poetry run pytest tests
