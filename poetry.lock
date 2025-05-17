@@ -406,17 +406,6 @@ fasttext = ["fasttext (>=0.9.1)", "numpy (>=1.19.3,<2)"]
 langdetect = ["langdetect (>=1.0.0)"]
 
 [[package]]
-name = "durable-rules"
-version = "2.0.6"
-description = "for real time analytics (a Python Rules Engine)"
-optional = false
-python-versions = "*"
-groups = ["main"]
-files = [
-    {file = "durable_rules-2.0.6.tar.gz", hash = "sha256:1f04e0401ea2f1a8d5ca0007cbb6db079731b9f03ac7be6e2f25ee44b0b0cc43"},
-]
-
-[[package]]
 name = "fastapi"
 version = "0.115.12"
 description = "FastAPI framework, high performance, easy to learn, fast to code, ready for production"
@@ -2667,4 +2656,4 @@ files = [
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.13"
-content-hash = "26af842ce00ac4de98b251e429ad1d34b4455e00167511fa42fdb9c247e3382f"
+content-hash = "adf3dd8acfb5353f570af29e9ab44a136b7478a44f6aea04bc1cb08f34849647"

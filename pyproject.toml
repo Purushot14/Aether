@@ -13,7 +13,6 @@ prometheus-api-client = "0.6.0"
 pandas = "2.2.3"
 numpy = "2.2.5"
 pyyaml = "6.0.2"
-durable-rules = { version = "2.0.28", allow-prereleases = true }
 streamlit = "1.45.1"
 
 [tool.poetry.group.dev.dependencies]
