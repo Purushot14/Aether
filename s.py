@@ -7,72 +7,150 @@ Created: 17/05/25.
 __author__ = "prakash"
 __date__ = "17/05/25"
 
-rule_code = """
-from durable.lang import *
 
-with ruleset('resource_optimization'):
+updated_readme = """
+# 🌩️ Aether – AI-Powered Cloud Cost Optimization Platform
 
-    # Rule for overprovisioned CPU
-    @when_all((m.cpu_utilization < 0.4) & (m.days_tracked >= 7))
-    def scale_down_cpu(c):
-        print(f"[RULE] CPU underutilized for {c.m.resource_id}: Recommend scaling down.")
-        c.assert_fact({
-            'resource_id': c.m.resource_id,
-            'recommendation': 'scale_down_cpu',
-            'reason': 'CPU usage below 40% for 7+ days'
-        })
+Aether is a cloud-native, AI-augmented platform designed to help platform teams identify and reduce overprovisioned infrastructure costs across Kubernetes and multi-cloud workloads.
 
-    # Rule for overprovisioned Memory
-    @when_all((m.memory_utilization < 0.5) & (m.days_tracked >= 7))
-    def scale_down_memory(c):
-        print(f"[RULE] Memory underutilized for {c.m.resource_id}: Recommend scaling down.")
-        c.assert_fact({
-            'resource_id': c.m.resource_id,
-            'recommendation': 'scale_down_memory',
-            'reason': 'Memory usage below 50% for 7+ days'
-        })
+---
 
-    # Rule for consistently high usage (potential scale up)
-    @when_all((m.cpu_utilization > 0.9) & (m.memory_utilization > 0.9) & (m.days_tracked >= 5))
-    def scale_up(c):
-        print(f"[RULE] High resource usage for {c.m.resource_id}: Recommend scaling up.")
-        c.assert_fact({
-            'resource_id': c.m.resource_id,
-            'recommendation': 'scale_up',
-            'reason': 'CPU & Memory consistently high for 5+ days'
-        })
+## 🚀 Features
 
-# Example usage
-if __name__ == '__main__':
-    from durable.engine import post
+- 🤖 **AI-based Resource Right-Sizing** – Predicts optimal CPU/Memory for K8s workloads using Isolation Forest
+- 📏 **Rule-based Recommendations** – Plain Python logic to suggest actions based on historical usage
+- 📊 **Interactive Dashboard** – Streamlit UI to visualize savings opportunities per tenant
+- 🔧 **Terraform IaC Modules** – EKS + Prometheus observability infrastructure
+- 🔐 **Multi-Tenant & GitOps Friendly** – Secure, modular, and CI/CD ready
 
-    test_data = [
-        {
-            'resource_id': 'analytics-pod',
-            'cpu_utilization': 0.32,
-            'memory_utilization': 0.45,
-            'days_tracked': 10
-        },
-        {
-            'resource_id': 'ml-model-pod',
-            'cpu_utilization': 0.95,
-            'memory_utilization': 0.96,
-            'days_tracked': 6
-        },
-        {
-            'resource_id': 'frontend-pod',
-            'cpu_utilization': 0.70,
-            'memory_utilization': 0.48,
-            'days_tracked': 8
-        }
-    ]
+---
 
-    for data in test_data:
-        post('resource_optimization', data)
+## 🧱 Project Structure
+
+```
+aether/
+├── api/                   # FastAPI service (stubbed)
+├── ai_engine/             # AI/ML logic (Isolation Forest model)
+│   └── right_sizer.py
+├── rules/                 # Pure Python rule engine
+│   └── rule_engine.py
+├── data_pipeline/         # (To be implemented: metric ingestion)
+├── dashboard/             # Streamlit dashboard
+│   └── app.py
+├── infra/
+│   └── terraform/         # IaC setup for EKS + Prometheus
+│       ├── modules/
+│       │   ├── eks/
+│       │   └── prometheus/
+│       └── environments/
+│           └── dev/terraform.tfvars
+├── pyproject.toml         # Poetry dependencies
+├── docker-compose.yml     # Local dev setup
+└── README.md              # You're here!
+```
+
+---
+
+## 🧪 How to Run Everything
+
+### 1. 🔧 Install Dependencies (Poetry)
+
+```bash
+poetry install
+```
+
+---
+
+### 2. 🤖 Run the AI Right-Sizing Engine
+
+```bash
+poetry run python ai_engine/right_sizer.py
+```
+
+> Outputs recommended CPU/memory for pods with confidence score based on usage data.
+
+---
+
+### 3. 📏 Run the Rule Engine
+
+```bash
+poetry run python rules/rule_engine.py
+```
+
+> Evaluates sample workloads and prints rule-based recommendations like:
+```
+[RECOMMENDATION] analytics-pod: scale_down_cpu — CPU usage below 40% for 7+ days
+```
+
+---
+
+### 4. 📊 Launch the Streamlit Dashboard
+
+```bash
+poetry run streamlit run dashboard/app.py
+```
+
+> View recommendations in a tabular format with tenant-wise filtering.
+
+---
+
+### 5. 🛠️ Provision Infrastructure with Terraform
+
+#### Setup
+
+Update your `terraform.tfvars` with valid `vpc_id` and `subnet_ids` in:
+
+```hcl
+aether/infra/terraform/environments/dev/terraform.tfvars
+```
+
+#### Run
+
+```bash
+cd aether/infra/terraform/modules/eks
+terraform init
+terraform apply -var-file=../../environments/dev/terraform.tfvars
+
+cd ../prometheus
+terraform init
+terraform apply
+```
+
+---
+
+## 🧠 Model Details
+
+- **Model:** Isolation Forest
+- **Use:** Detects underutilized workloads for downscaling
+- **Extension:** Forecasting (Prophet, LSTM) planned in future versions
+
+---
+
+## 🔐 Security Principles
+
+- Least-privilege IAM for AWS modules
+- GitOps workflow compatible (ArgoCD/Flux ready)
+- Future: Auth-enabled dashboards + multi-tenant K8s namespaces
+
+---
+
+## 📥 Contributing
+
+We welcome:
+- New ML-based optimization techniques
+- Alerting & notification plugins
+- GitHub PR-based automation logic
+
+---
+
+## 📄 License
+
+MIT License — feel free to build on top of it.
 """
 
-with open("rules/rule_engine.py", "w") as f:
-    f.write(rule_code.strip())
+with open("README.md", "w") as f:
+    f.write(updated_readme.strip())
+
 
 if __name__ == "__main__":
     import os

@@ -8,14 +8,15 @@ authors = ["Purushothaman <praksh.purushot@gmail.com>"]
 python = "^3.13"
 fastapi = "0.115.12"
 uvicorn = { extras = ["standard"], version = "0.34.2" }
-scikit-learn = "1.4.0"
+scikit-learn = "1.6.1"
 prometheus-api-client = "0.6.0"
-pandas = "2.2.1"
-numpy = "1.26.4"
-pyyaml = "6.0.1"
-durable-rules = "2.0.6"
+pandas = "2.2.3"
+numpy = "2.2.5"
+pyyaml = "6.0.2"
+durable-rules = { version = "2.0.28", allow-prereleases = true }
+streamlit = "1.45.1"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 pytest = "8.2.0"
 black = "25.1.0"
 mypy = "1.10.0"
